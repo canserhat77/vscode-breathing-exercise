@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Breathing Exercise</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: var(--vscode-editor-background);
+        }
+
+        .top-container {
+            position: fixed;
+            top: 20px;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .controls-group {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .status-group {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 10px;
+            margin-left: 30px;
+        }
+
+        .breath-circle {
+            width: 50px;
+            height: 50px;
+            background-color: #8B0000;
+            border-radius: 50%;
+            transition: transform 0.1s ease-in-out;
+            margin-top: 100px; /* Increased space between controls and circle */
+        }
+
+        .message {
+            color: var(--vscode-foreground);
+            font-family: var(--vscode-font-family);
+            font-size: 1.2em;
+        }
+
+        select, button {
+            padding: 5px 10px;
+            background-color: var(--vscode-button-background);
+            color: var(--vscode-button-foreground);
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .timer {
+            color: var(--vscode-foreground);
+            font-family: var(--vscode-font-family);
+        }
+    </style>
+</head>
+<body>
+    <div class="top-container">
+        <div class="controls-group">
+            <select id="duration">
+                <option value="1">1 minute</option>
+                <option value="2">2 minutes</option>
+                <option value="3">3 minutes</option>
+                <option value="4">4 minutes</option>
+                <option value="5">5 minutes</option>
+                <option value="10">10 minutes</option>
+                <option value="15">15 minutes</option>
+            </select>
+            <button id="startBtn">Start Breathing</button>
+            <div class="status-group">
+                <div class="message">Press start to begin</div>
+                <div class="timer"></div>
+            </div>
+        </div>
+    </div>
+    <div class="breath-circle"></div>
+    <script>
+        const circle = document.querySelector('.breath-circle');
+        const message = document.querySelector('.message');
+        const startBtn = document.getElementById('startBtn');
+        const durationSelect = document.getElementById('duration');
+        const timerDisplay = document.querySelector('.timer');
+        
+        let intervalId = null;
+        let endTime = null;
+        let timerInterval = null;
+
+        function updateTimer() {
+            if (!endTime) return;
+            
+            const now = new Date().getTime();
+            const timeLeft = endTime - now;
+            
+            if (timeLeft <= 0) {
+                stopExercise();
+                return;
+            }
+
+            const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+            timerDisplay.textContent = `Time remaining: ${minutes}:${seconds.toString().padStart(2, '0')}`;
+        }
+
+        function breathingAnimation() {
+            // Inhale - 5.5 seconds
+            message.textContent = 'Inhale...';
+            circle.style.transform = 'scale(4)';
+            circle.style.transition = 'transform 5.5s ease-in-out';
+
+            setTimeout(() => {
+                // Exhale - 5.5 seconds
+                message.textContent = 'Exhale...';
+                circle.style.transform = 'scale(1)';
+                circle.style.transition = 'transform 5.5s ease-in-out';
+            }, 5500);
+        }
+
+        function startExercise() {
+            const durationInMinutes = parseInt(durationSelect.value);
+            endTime = new Date().getTime() + (durationInMinutes * 60 * 1000);
+            
+            startBtn.disabled = true;
+            durationSelect.disabled = true;
+            message.textContent = 'Inhale...';
+            
+            // Start breathing animation
+            breathingAnimation();
+            intervalId = setInterval(breathingAnimation, 11000); // Total cycle: 5.5s inhale + 5.5s exhale
+
+            // Start timer
+            updateTimer();
+            timerInterval = setInterval(updateTimer, 1000);
+        }
+
+        function stopExercise() {
+            clearInterval(intervalId);
+            clearInterval(timerInterval);
+            message.textContent = 'Exercise completed';
+            circle.style.transform = 'scale(1)';
+            startBtn.disabled = false;
+            durationSelect.disabled = false;
+            endTime = null;
+            timerDisplay.textContent = '';
+        }
+
+        startBtn.addEventListener('click', startExercise);
+    </script>
+</body>
+</html> 
