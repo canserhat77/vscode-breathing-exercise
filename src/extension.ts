@@ -103,7 +103,7 @@ class BreathingViewProvider implements vscode.WebviewViewProvider {
 class BreathingPanel {
 	public static currentPanel: BreathingPanel | undefined;
 	private readonly _panel: vscode.WebviewPanel;
-	private _disposables: vscode.Disposable[] = [];
+	private readonly _disposables: vscode.Disposable[] = [];
 
 	private constructor(panel: vscode.WebviewPanel, extensionUri: vscode.Uri) {
 		this._panel = panel;
@@ -128,7 +128,7 @@ class BreathingPanel {
 		const panel = vscode.window.createWebviewPanel(
 			'breathingExercise',
 			'Breathing Exercise',
-			column || vscode.ViewColumn.One,
+			column ?? vscode.ViewColumn.One,
 			{
 				enableScripts: true,
 				retainContextWhenHidden: true,

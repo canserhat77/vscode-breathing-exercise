@@ -105,7 +105,7 @@ class BreathingPanel {
             BreathingPanel.currentPanel._panel.reveal(column);
             return;
         }
-        const panel = vscode.window.createWebviewPanel('breathingExercise', 'Breathing Exercise', column || vscode.ViewColumn.One, {
+        const panel = vscode.window.createWebviewPanel('breathingExercise', 'Breathing Exercise', column ?? vscode.ViewColumn.One, {
             enableScripts: true,
             retainContextWhenHidden: true,
         });
