@@ -5,7 +5,7 @@ const vscode = require("vscode");
 const path = require("path");
 const fs = require("fs");
 function activate(context) {
-    let disposable = vscode.commands.registerCommand('breathe.start', () => {
+    const disposable = vscode.commands.registerCommand('breathe.start', () => {
         BreathingPanel.createOrShow(context.extensionUri);
     });
     // Create and register the sidebar view provider
@@ -16,7 +16,7 @@ class BreathingViewProvider {
     constructor(_extensionUri) {
         this._extensionUri = _extensionUri;
     }
-    resolveWebviewView(webviewView, context, _token) {
+    resolveWebviewView(webviewView, _context, _token) {
         webviewView.webview.options = {
             enableScripts: true,
             localResourceRoots: [this._extensionUri]

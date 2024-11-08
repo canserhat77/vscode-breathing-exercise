@@ -3,7 +3,7 @@ import * as path from 'path';
 import * as fs from 'fs';
 
 export function activate(context: vscode.ExtensionContext) {
-	let disposable = vscode.commands.registerCommand('breathe.start', () => {
+	const disposable = vscode.commands.registerCommand('breathe.start', () => {
 		BreathingPanel.createOrShow(context.extensionUri);
 	});
 
@@ -21,7 +21,7 @@ class BreathingViewProvider implements vscode.WebviewViewProvider {
 
 	public resolveWebviewView(
 		webviewView: vscode.WebviewView,
-		context: vscode.WebviewViewResolveContext,
+		_context: vscode.WebviewViewResolveContext,
 		_token: vscode.CancellationToken,
 	) {
 		webviewView.webview.options = {
