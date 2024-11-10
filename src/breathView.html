@@ -31,6 +31,8 @@
         }
 
         .status-group {
+            position: fixed;
+            top: 100px;
             display: flex;
             flex-direction: column;
             align-items: flex-start;
@@ -86,11 +88,12 @@
                 <option value="15">15 minutes</option>
             </select>
             <button id="startBtn">Start Breathing</button>
-            <div class="status-group">
-                <div class="message">Press start to begin</div>
-                <div class="timer"></div>
-            </div>
+            
         </div>
+    </div>
+    <div class="status-group">
+        <div class="message">Press start to begin</div>
+        <div class="timer"></div>
     </div>
     <div class="breath-circle"></div>
     <script>
@@ -140,15 +143,26 @@
             
             startBtn.disabled = true;
             durationSelect.disabled = true;
-            message.textContent = 'Inhale...';
-            
-            // Start breathing animation
-            breathingAnimation();
-            intervalId = setInterval(breathingAnimation, 11000); // Total cycle: 5.5s inhale + 5.5s exhale
 
-            // Start timer
-            updateTimer();
-            timerInterval = setInterval(updateTimer, 1000);
+            let countdown = 3;
+            message.textContent = 'Steady... ' + countdown;
+            const countdownInterval = setInterval(() => {
+                countdown--;
+                if (countdown > 0) {
+                    message.textContent = 'Steady... ' + countdown;
+                } else {
+                    clearInterval(countdownInterval);
+                    message.textContent = 'Inhale...';
+                    
+                    // Start breathing animation
+                    breathingAnimation();
+                    intervalId = setInterval(breathingAnimation, 11000); // Total cycle: 5.5s inhale + 5.5s exhale
+
+                    // Start timer
+                    updateTimer();
+                    timerInterval = setInterval(updateTimer, 1000);
+                }
+            }, 1000);
         }
 
         function stopExercise() {
@@ -165,4 +179,4 @@
         startBtn.addEventListener('click', startExercise);
     </script>
 </body>
-</html> 
+</html>
