@@ -106,6 +106,7 @@
         let intervalId = null;
         let endTime = null;
         let timerInterval = null;
+        let isRunning = false;
 
         function updateTimer() {
             if (!endTime) return;
@@ -131,7 +132,9 @@
 
             setTimeout(() => {
                 // Exhale - 5.5 seconds
-                message.textContent = 'Exhale...';
+                if (isRunning){
+                    message.textContent = 'Exhale...';
+                }
                 circle.style.transform = 'scale(1)';
                 circle.style.transition = 'transform 5.5s ease-in-out';
             }, 5500);
@@ -143,6 +146,8 @@
             
             startBtn.disabled = true;
             durationSelect.disabled = true;
+
+            isRunning = true;
 
             let countdown = 3;
             message.textContent = 'Steady... ' + countdown;
@@ -166,6 +171,7 @@
         }
 
         function stopExercise() {
+            isRunning = false;
             clearInterval(intervalId);
             clearInterval(timerInterval);
             message.textContent = 'Exercise completed';

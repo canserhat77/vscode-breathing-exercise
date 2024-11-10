@@ -2,7 +2,7 @@
 	"name": "breathing-exercise",
 	"description": "Take a moment to breathe and relax.",
 	"version": "0.0.1",
-	"publisher": "Serhat Can",
+	"publisher": "canserhat5951",
 	"private": true,
 	"license": "MIT",
 	"repository": {
@@ -16,6 +16,9 @@
 		"Other"
 	],
 	"main": "./out/extension.js",
+	"activationEvents": [
+		"onCommand:breathe.start"
+	],
 	"contributes": {
 		"commands": [
 			{
@@ -56,7 +59,8 @@
 		"vscode:prepublish": "npm run compile",
 		"compile": "tsc -p ./",
 		"lint": "eslint",
-		"watch": "tsc -w -p ./"
+		"watch": "tsc -w -p ./",
+		"build": "npm run compile  && vsce package"
 	},
 	"devDependencies": {
 		"@eslint/js": "^9.13.0",
